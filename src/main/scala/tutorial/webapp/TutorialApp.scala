@@ -42,20 +42,19 @@ object TutorialApp {
   }
 
   def setupUI(): Unit = {
-    val button = document.createElement("button")
-    button.textContent = "Click me!"
-    button.addEventListener(
-      "click",
-      { (e: dom.MouseEvent) =>
-        addClickedMessage()
-      }
-    )
-    document.body.appendChild(
-      Heading.make(Heading(1), "Picasso")
-    )
+    val heading = Heading.make(Heading(1), "Picasso")
+    heading.classList.add("banner")
+    document.body.appendChild(heading)
 
 // hacky solution until I think about it. Just a katamari cell really.
-var hackyGrid: Option[Grid] = None
+    var hackyGrid: Option[Grid] = None
+
+    var hackyPalette: Option[dom.raw.Element] = None
+
+    def renderCurrent() = {
+      hackyGrid.foreach((g) => Grid.renderIn(g, state.user.grid));
+      hackyPalette.foreach((p) => Palette.setActiveColor(p, state.activeColor))
+    }
 
     val grid = Grid.make(
       solution.numDown,
@@ -67,7 +66,7 @@ var hackyGrid: Option[Grid] = None
               Canvas.setColor(state.user, (rowNum, colNum), state.activeColor)
           )
 
-          hackyGrid.foreach((g) => Grid.renderIn(g, state.user.grid));
+          renderCurrent()
           ()
         }
       })
@@ -79,32 +78,30 @@ var hackyGrid: Option[Grid] = None
     Grid.renderIn(solutionGrid, state.solution.grid)
 
     val container = document.createElement("div")
+    container.classList.add("container")
     container.appendChild(solutionGrid.container)
     container.appendChild(grid.container)
 
     val outerContainer = document.createElement("div")
+    outerContainer.classList.add("outer-container")
     outerContainer.appendChild(container)
 
     document.body.appendChild(outerContainer)
 
-    document.body.appendChild(
-      Palette.renderPalette(
-        List(Black, Red, Green, Blue),
-        onChooseColor = (activeColor: Color) => {
-          state = state.copy(
-            activeColor = activeColor
-          )
-        }
-      )
+    val rawPalette = Palette.renderPalette(
+      Color.getAll(),
+      onChooseColor = (activeColor: Color) => {
+        state = state.copy(
+          activeColor = activeColor
+        )
+        renderCurrent()
+      }
     )
 
-    document.body.appendChild(button)
+    hackyPalette = Some(rawPalette)
+    document.body.appendChild(rawPalette)
 
-    appendPar(document.body, "Hello World")
+    renderCurrent()
   }
 
-  @JSExportTopLevel("addClickedMessage")
-  def addClickedMessage(): Unit = {
-    appendPar(document.body, "You clicked the button!")
-  }
 }

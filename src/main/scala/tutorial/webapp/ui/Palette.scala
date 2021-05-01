@@ -5,6 +5,7 @@ import org.scalajs.dom.raw.Element
 import org.scalajs.dom.document
 
 import tutorial.webapp.puzzle.Color
+import tutorial.webapp.alien.DomUtils
 
 object Palette {
 
@@ -28,6 +29,39 @@ object Palette {
     } else {
       None
     }
+  }
+
+  def getAllItems(paletteElement: Element): List[(Element, Color)] = {
+    val all = paletteElement.querySelectorAll("[data-color]")
+    val list = new scala.collection.mutable.ListBuffer[(Element, Color)]()
+    System.out.println("list: " + all.length)
+    for (i <- 0 to all.length) {
+      all(i) match {
+        case item: Element => {
+          val optEntry = for {
+            colorString <- DomUtils.getAttribute(item, "data-color")
+            color <- Color.identify(colorString)
+          } yield ((item, color))
+
+          optEntry.foreach((e) => list.addOne(e))
+        }
+        case _ => ()
+      }
+    }
+    list.toList
+  }
+
+  // Hacky DOM approach.
+  def setActiveColor(paletteElement: Element, activeColor: Color): Unit = {
+    val candidates = getAllItems(paletteElement)
+    System.out.println("candidates: " + candidates)
+    candidates.foreach({
+      case (elm, color) => if (activeColor == color) {
+        elm.classList.add("active-color")
+      } else {
+        elm.classList.remove("active-color")
+      }
+    })
   }
 
   def renderPalette(colors: List[Color], onChooseColor: Color => Unit): Element = {

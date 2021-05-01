@@ -6,6 +6,7 @@ object DomUtils {
 
   def getAttribute(elm: Element, name: String): Option[String] = {
     val raw = elm.getAttribute(name)
-    if (raw.nonEmpty) Some(raw) else None
+    System.out.println("raw: " + raw)
+    if (raw != null && raw.nonEmpty) Some(raw) else None
   }
 }

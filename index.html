@@ -5,19 +5,26 @@
     <title>The Scala.js Tutorial</title>
 
     <style>
-      table td {
-        width: 20px;
-        height: 20px;
-        border: 1px solid blue;
-        text-align: center;
-        cursor: pointer;
+      .outer-container {
+        display: flex;
       }
 
-      .color-palette {
+      .container {
         display: flex;
-        padding: 1em;
-        background: lightgrey;
-        border-radius: 10px;
+    justify-content: space-around;
+    margin: 10px;
+    flex: 1;
+      }
+
+      body {
+        border: 10px solid saddlebrown;
+      }
+      table td {
+        width: 60px;
+    height: 60px;
+    border: 1px dotted black;
+    text-align: center;
+    cursor: pointer;
       }
 
       .color-palette .color {
@@ -40,26 +47,84 @@
         background-color: black;
       }
 
-      .color.active-color {
-        border: 5px solid white;
+      [data-color="white"] {
+        background-color: white;
       }
 
+      [data-color="yellow"] {
+        background-color: yellow;
+      }
+
+      [data-color="pink"] {
+        background-color: pink;
+      }
+
+      [data-color="purple"] {
+        background-color: purple;
+      }
+
+      [data-color="orange"] {
+        background-color: orange;
+      }
+
+      [data-color="cyan"] {
+        background-color: cyan;
+      }
+
+      [data-color="brown"] {
+        background-color: brown;
+      }
+
+      [data-color="multicolor"] {
+        background-image: linear-gradient(red, yellow, green);
+      }
+
+      .color-palette {
+        display: flex;
+        padding: 1em;
+        /* background: lightgrey; */
+        border-radius: 10px;
+        flex-wrap: wrap;
+      }
+
+      .active-color:before {
+          content: "✔";
+          margin-left: auto auto;
+          width: 100%;
+          padding: 2px;
+          font-weight: bold;
+          color: white;
+          font-size: 2em;
+          height: 100%;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+      }
 
       
       .color {
-        width: 40px;
+        width: 60px;
         border: 5px solid lightgrey;
-        height: 40px;
+        height: 60px;
         border-radius: 40%;
+      }
+
+      .banner {
+        font-size: 32px;
+        margin-top: 0px;
+    text-align: center;
+    font-weight: bold;
+    background: #2a7f35;
+    color: white;
+    padding: 10px;
+    font-family: sans-serif;
       }
     </style>
   </head>
   <body>
+  
     <!-- Include Scala.js compiled code -->
     <script type="text/javascript" src="./target/scala-2.13/scala-js-tutorial-fastopt/main.js"></script>
   </body>
-  <button id="click-me-button" type="button" onclick="addClickedMessage()">
-    Click me!
-  </button>
   
 </html>
