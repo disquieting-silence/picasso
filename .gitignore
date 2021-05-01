@@ -1,3 +1,8 @@
 /target
 /project/target
 /.bsp
+/node_modules
+/project/project
+.bloop
+.metals
+/.idea

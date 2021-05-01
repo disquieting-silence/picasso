@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>The Scala.js Tutorial</title>
+
+    <style>
+      table td {
+        width: 20px;
+        height: 20px;
+        border: 1px solid blue;
+        text-align: center;
+        cursor: pointer;
+      }
+
+      .color-palette {
+        display: flex;
+        padding: 1em;
+        background: lightgrey;
+        border-radius: 10px;
+      }
+
+      .color-palette .color {
+        margin: 2px;
+      }
+
+      .color-red {
+        background-color: red;
+      }
+      
+      .color-green {
+        background-color: green;
+      }
+
+      .color-blue {
+        background-color: blue;
+      }
+
+      .color-black {
+        background-color: black;
+      }
+
+      .color.active-color {
+        border: 5px solid white;
+      }
+      
+      .color {
+        width: 40px;
+        border: 5px solid lightgrey;
+        height: 40px;
+        border-radius: 40%;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Include Scala.js compiled code -->
+    <script type="text/javascript" src="./target/scala-2.13/scala-js-tutorial-fastopt/main.js"></script>
+  </body>
+  <button id="click-me-button" type="button" onclick="addClickedMessage()">
+    Click me!
+  </button>
+  
+</html>
