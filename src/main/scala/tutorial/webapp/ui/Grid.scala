@@ -14,13 +14,18 @@ final case class Grid(
 )
 
 object Grid {
+  private def renderCell(cell: Element, color: Color) = {
+    cell.setAttribute("data-color", color.toString().toLowerCase())
+  }
+
   def renderIn(grid: Grid, colors: List[List[Color]]) = {
     colors.zipWithIndex.foreach({
       case (row: List[Color], rowId: Int) => {
         row.zipWithIndex.foreach({
           case (cell: Color, cellId: Int) => {
             // Unsafe.
-            grid.cells(rowId)._2(cellId).setAttribute("data-color", "color-" + cell.toString().toLowerCase())
+            val element = grid.cells(rowId)._2(cellId)
+            renderCell(element, cell)
           }
         })
       }
@@ -53,6 +58,7 @@ object Grid {
         val cellsInRow = Range(0, numCols).toList.map(
           (colId: Int) => {
             val td = document.createElement("td");
+            td.classList.add("grid-cell")
             td.setAttribute("data-row", rowId.toString())
             td.setAttribute("data-column", colId.toString())
             td

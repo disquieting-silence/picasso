@@ -7,3 +7,13 @@ final case object Red extends Color
 final case object Blue extends Color
 final case object Green extends Color
 final case object White extends Color
+
+object Color {
+  def getAll(): List[Color] = List(
+    Black,
+    Red,
+    Blue,
+    Green,
+    White
+  )
+}

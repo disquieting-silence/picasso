@@ -75,7 +75,17 @@ var hackyGrid: Option[Grid] = None
 
     hackyGrid = Some(grid)
 
-    document.body.appendChild(grid.container)
+    val solutionGrid = Grid.make(solution.numDown, solution.numAcross, _ => ())
+    Grid.renderIn(solutionGrid, state.solution.grid)
+
+    val container = document.createElement("div")
+    container.appendChild(solutionGrid.container)
+    container.appendChild(grid.container)
+
+    val outerContainer = document.createElement("div")
+    outerContainer.appendChild(container)
+
+    document.body.appendChild(outerContainer)
 
     document.body.appendChild(
       Palette.renderPalette(
