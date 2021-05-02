@@ -41,6 +41,23 @@ object TutorialApp {
     targetNode.appendChild(parNode)
   }
 
+  def calculatePercent(user: Canvas, solution: Canvas) = {
+    // Use immutable things.
+    val overallCorrect = user.grid.zipWithIndex.foldRight(0)({
+      case ((row, rowId), acc) => {
+        acc + row.zipWithIndex.foldRight(0)({
+          case ((cell, colId), acc2) => {
+            val numCorrect = cell == solution.grid(rowId)(colId)
+            if (numCorrect) acc2 + 1 else acc2
+          }
+        })
+      }
+    })
+
+    System.out.println("overall: " + overallCorrect)
+    Math.ceil(((overallCorrect + 0.0) / (user.numAcross * user.numDown)) * 100).toInt
+  }
+
   def setupUI(): Unit = {
     val heading = Heading.make(Heading(1), "Picasso")
     heading.classList.add("banner")
@@ -50,10 +67,17 @@ object TutorialApp {
     var hackyGrid: Option[Grid] = None
 
     var hackyPalette: Option[dom.raw.Element] = None
+    var hackyProgress: Option[ProgressBar] = None
 
     def renderCurrent() = {
       hackyGrid.foreach((g) => Grid.renderIn(g, state.user.grid));
       hackyPalette.foreach((p) => Palette.setActiveColor(p, state.activeColor))
+
+      val percentSolved = calculatePercent(state.user, state.solution)
+
+      hackyProgress.foreach((pb) => {
+        ProgressBar.setValue(pb, percentSolved)
+      })
     }
 
     val grid = Grid.make(
@@ -65,6 +89,7 @@ object TutorialApp {
             user =
               Canvas.setColor(state.user, (rowNum, colNum), state.activeColor)
           )
+
 
           renderCurrent()
           ()
@@ -100,6 +125,10 @@ object TutorialApp {
 
     hackyPalette = Some(rawPalette)
     document.body.appendChild(rawPalette)
+
+    val progressBar = ProgressBar.make()
+    hackyProgress = Some(progressBar)
+    document.body.appendChild(progressBar.container)
 
     renderCurrent()
   }

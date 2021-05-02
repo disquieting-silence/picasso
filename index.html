@@ -25,6 +25,7 @@
     border: 1px dotted black;
     text-align: center;
     cursor: pointer;
+        transition: background-color 0.4s ease;
       }
 
       .color-palette .color {
@@ -119,10 +120,30 @@
     padding: 10px;
     font-family: sans-serif;
       }
+
+      .progressbar {
+        height: 40px;
+        border-top: 10px solid saddlebrown;
+      }
+
+      .progressbar .progress {
+        background: linear-gradient(315deg, #67215e, transparent);
+        width: 0%;
+        height: 100%;
+        transition: width 0.2s ease 0.5s;
+      }
     </style>
   </head>
   <body>
   
+    <script>
+       setTimeout(() => {
+        const audio = new Audio("./slide.ogg");
+        audio.play();
+       }, 4000);
+
+
+    </script>
     <!-- Include Scala.js compiled code -->
     <script type="text/javascript" src="./target/scala-2.13/scala-js-tutorial-fastopt/main.js"></script>
   </body>
