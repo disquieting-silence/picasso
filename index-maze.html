@@ -51,6 +51,7 @@
       td.current-maze-focus.dest-maze-focus:before {
         content: '✪';
         color: #e2d527;
+        background-color: black;
         font-size: 2em;
         font-weight: bold;
 
@@ -91,6 +92,32 @@
 
       body.maze-victory {
         background: lightgreen;
+      }
+
+      .commands {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+      }
+
+      .new-mazes {
+        display: flex;
+        align-items: center;
+        padding: 1em;
+      }
+
+      .new-mazes button {
+        background-color: black;
+        color: white;
+        font-size: 2em;
+        border-radius: 25%;
+        padding: 0.3em;
+        width: 60px;
+        height: 60px;
+        font-weight: bold;
+        border: none;
+        margin: 2px;
       }
 
     </style>

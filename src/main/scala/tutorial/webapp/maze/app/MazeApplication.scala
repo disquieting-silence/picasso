@@ -25,6 +25,12 @@ object MazeApplication {
     val mazeWorld = GridOfSquares.make(5, 10, (_, _, _) => ())
     var state: Option[(Maze.MazeFocus, Maze, Maze.MazeFocus)] = None
 
+    def createNewMaze(pathLength: Int) = {
+      val newMaze = Maze.createRandom(5, 10, pathLength)
+      state = Some(newMaze)
+      render()
+    }
+
     def render() = {
       state.foreach({
         case (current, world, finish) => {
@@ -59,11 +65,29 @@ object MazeApplication {
         }
       )
     )
-    DomUtils.appendToBody(directionPanel)
 
-    val maze = Maze.createRandom(5, 10, pathLength = 8)
 
-    state = Some(maze)
+    val newMazePanel = Elements.container(
+      "new-mazes",
+      List(3, 5, 8, 10, 15).map((x) => Elements.button(
+        s"maze-${x}", x.toString(), _ => createNewMaze(x)
+      ))
+    )
+
+    
+    val commandPanel = Elements.container(
+      "commands",
+      List(
+        newMazePanel,
+        directionPanel
+      )
+    )
+
+    DomUtils.appendToBody(commandPanel)
+
+    
+
+    createNewMaze(5)
 
     render()
 
