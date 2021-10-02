@@ -24,4 +24,20 @@ Use `index-maze.html` for Maze.
 
 ## Mobile App Deployment
 
-TODO
+Firstly, you'll want a production build
+
+```
+$ sbt fullLinkJS
+```
+
+This will generate a file in `target/scala-2.13/scala-js-tutorial-opt/main.js`.
+
+Then, you'll need to copy the index files and this js file to picasso-app and put it in `picasso-app/app/src/main/assets`. Then, make sure the `WebView` in `MainActivity` is referencing the right HTML file, and that the HTML file is referencing the right js file. You will need to modify it.
+
+### Deploying
+
+Use Android Studio
+
+**Which User do you need to be?**
+
+Admin. Deploy while Admin. If you can't see the device in Android Studio, find a better cable. Has to have data capabilities.
