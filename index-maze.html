@@ -32,12 +32,53 @@
         height: 40px;
       }
 
+      td.current-maze-focus:before {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        content: '⬤';
+        color: white;
+      }
+
+      td.dest-maze-focus:before {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        content: '⬤';
+        color: #47cc47;
+      }
+
       td[data-maze-square=pathsquare] {
-        background-color: lightblue;
+        background-color: #82698a;
       }
 
       td[data-maze-square=solidsquare] {
         background-color: darkslategrey;
+      }
+
+      .directions {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin: 10px;
+      }
+
+      .directions button {
+
+        margin: 2px;
+        height: 60px;
+        width: 60px;
+        font-size: 3em;
+        font-weight: bold;
+        background: #711a1a;
+        border: none;
+        border-radius: 20%;
+        color: white;
+      }
+
+      .maze-container {
+        display: flex;
+        justify-content: center;
       }
 
     </style>

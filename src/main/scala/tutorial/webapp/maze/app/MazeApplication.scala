@@ -7,6 +7,7 @@ import org.w3c.dom.events.EventListener
 
 import tutorial.webapp.ui.Heading
 import tutorial.webapp.ui.DomUtils
+import tutorial.webapp.ui.Elements
 import tutorial.webapp.maze.ui.DirectionPanel
 import tutorial.webapp.maze.core.Movement
 import tutorial.webapp.maze.core.Maze
@@ -28,12 +29,18 @@ object MazeApplication {
     })
     DomUtils.appendToBody(directionPanel)
 
-    val maze = Maze.createRandom(10, 10)
+    val maze = Maze.createRandom(5, 10, pathLength = 8)
 
-    val mazeWorld = GridOfSquares.make(10, 10, (_, _, _) => ())
+    val mazeWorld = GridOfSquares.make(5, 10, (_, _, _) => ())
 
-    MazeWorld.renderIn(mazeWorld, maze._2.squares)
-    DomUtils.appendToBody(mazeWorld.container)
+    MazeWorld.renderIn(mazeWorld, maze._1, maze._2.squares, maze._3)
+
+    val container = Elements.container(
+      "maze-container",
+      List(mazeWorld.container)
+    )
+
+    DomUtils.appendToBody(container)
 
 
 

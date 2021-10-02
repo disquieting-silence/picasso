@@ -22,11 +22,11 @@ object Maze {
     maze.squares(nextFocus.row)(nextFocus.col) == PathSquare
   }
 
-  def createRandom(numRows: Int, numCols: Int): (MazeFocus, Maze) = {
+  def createRandom(numRows: Int, numCols: Int, pathLength: Int): (MazeFocus, Maze, MazeFocus) = {
     // start from (0, 0), go in a direction
     val current: (MazeFocus, Maze) = (
       MazeFocus(0, 0),
-      Maze.empty(numRows, numCols)
+      Maze.emptyExcept(numRows, numCols, MazeFocus(0, 0))
     )
 
     def move(focus: MazeFocus, maze: Maze, movement: Movement): Option[MazeFocus] = {
@@ -89,15 +89,25 @@ object Maze {
       }
     }
 
-    excavateUntil(current, 5).get
+    excavateUntil(current, pathLength).map({
+      case (finish, maze) => {
+        (current._1, maze, finish)
+      }
+    }).get
   }
 
-  def empty(numRows: Int, numCols: Int): Maze = {
+  def emptyExcept(numRows: Int, numCols: Int, start: MazeFocus): Maze = {
     Maze(
       numRows = numRows,
       numCols = numCols,
       squares = Range(0, numRows).toList.map((row) => {
-        Range(0, numCols).toList.map(_ => SolidSquare)
+        Range(0, numCols).toList.map((col) => {
+          if (start.col == col && start.row == row) {
+            PathSquare
+          } else {
+            SolidSquare
+          }
+        })
       })
     )
   }

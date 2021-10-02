@@ -10,10 +10,10 @@ object DirectionPanel {
     Elements.container(
       "directions",
       List(
-        Elements.button("left", "<-", _ => onMove(Movement.MoveLeft)),
-        Elements.button("right", "->", _ => onMove(Movement.MoveRight)),
-        Elements.button("up", "^", _ => onMove(Movement.MoveUp)),
-        Elements.button("down", "v", _ => onMove(Movement.MoveDown))
+        Elements.button("left", "←", _ => onMove(Movement.MoveLeft)),
+        Elements.button("right", "→", _ => onMove(Movement.MoveRight)),
+        Elements.button("up", "↑", _ => onMove(Movement.MoveUp)),
+        Elements.button("down", "↓", _ => onMove(Movement.MoveDown))
       )
 
     )
