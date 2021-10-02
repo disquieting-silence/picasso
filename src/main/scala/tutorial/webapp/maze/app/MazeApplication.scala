@@ -28,6 +28,7 @@ object MazeApplication {
     def render() = {
       state.foreach({
         case (current, world, finish) => {
+          document.body.classList.remove("maze-victory") 
           MazeWorld.renderIn(mazeWorld, current, world.squares, finish)
         }
       })
@@ -47,7 +48,14 @@ object MazeApplication {
       (move: Movement) => tryMoveUpdate(move).foreach(
         (newState) => {
           state = Some(newState)
+
+          
           render()
+
+          // check for victory condition
+          if (newState._1.col == newState._3.col && newState._1.row == newState._3.row) {
+            document.body.classList.add("maze-victory") 
+          }
         }
       )
     )

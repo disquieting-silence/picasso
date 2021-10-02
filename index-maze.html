@@ -48,6 +48,14 @@
         color: #47cc47;
       }
 
+      td.current-maze-focus.dest-maze-focus:before {
+        content: '✪';
+        color: #e2d527;
+        font-size: 2em;
+        font-weight: bold;
+
+      }
+
       td[data-maze-square=pathsquare] {
         background-color: #82698a;
       }
@@ -79,6 +87,10 @@
       .maze-container {
         display: flex;
         justify-content: center;
+      }
+
+      body.maze-victory {
+        background: lightgreen;
       }
 
     </style>
