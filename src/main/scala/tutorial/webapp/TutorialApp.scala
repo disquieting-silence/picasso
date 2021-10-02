@@ -6,14 +6,21 @@ import scala.scalajs.js.annotation.JSExportTopLevel
 import org.w3c.dom.events.EventListener
 
 import tutorial.webapp.mimic.app.MimicApplication
+import tutorial.webapp.maze.app.MazeApplication
 
 object TutorialApp {
 
   def main(args: Array[String]): Unit = {
     document.addEventListener(
       "DOMContentLoaded",
-      { (e: dom.Event) =>
-        MimicApplication.setupUI();
+      {
+        (e: dom.Event) => {
+          if (false) {
+            MimicApplication.setupUI();
+          } else {
+            MazeApplication.setupUI();
+          }
+        }
       }
     )
   }
