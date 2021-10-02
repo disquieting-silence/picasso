@@ -13,6 +13,7 @@ import tutorial.webapp.maze.core.Movement
 import tutorial.webapp.maze.core.Maze
 import tutorial.webapp.ui.GridOfSquares
 import tutorial.webapp.maze.ui.MazeWorld
+import tutorial.webapp.maze.core.PathSquare
 
 object MazeApplication {
 
@@ -21,19 +22,42 @@ object MazeApplication {
     heading.classList.add("banner")
     DomUtils.appendToBody(heading)
 
-    val directionPanel = DirectionPanel.build({
-      case Movement.MoveLeft => ()
-      case Movement.MoveRight => ()
-      case Movement.MoveDown => ()
-      case Movement.MoveUp => ()
-    })
+    val mazeWorld = GridOfSquares.make(5, 10, (_, _, _) => ())
+    var state: Option[(Maze.MazeFocus, Maze, Maze.MazeFocus)] = None
+
+    def render() = {
+      state.foreach({
+        case (current, world, finish) => {
+          MazeWorld.renderIn(mazeWorld, current, world.squares, finish)
+        }
+      })
+    }
+
+
+    def tryMoveUpdate(move: Movement): Option[(Maze.MazeFocus, Maze, Maze.MazeFocus)] = {
+      state.flatMap({
+        case (current, world, finish) => {
+          val optNext = Maze.move(current, world, move, PathSquare)
+          optNext.map((next) => (next, world, finish))
+        }
+      })
+    }
+
+    val directionPanel = DirectionPanel.build(
+      (move: Movement) => tryMoveUpdate(move).foreach(
+        (newState) => {
+          state = Some(newState)
+          render()
+        }
+      )
+    )
     DomUtils.appendToBody(directionPanel)
 
     val maze = Maze.createRandom(5, 10, pathLength = 8)
 
-    val mazeWorld = GridOfSquares.make(5, 10, (_, _, _) => ())
+    state = Some(maze)
 
-    MazeWorld.renderIn(mazeWorld, maze._1, maze._2.squares, maze._3)
+    render()
 
     val container = Elements.container(
       "maze-container",

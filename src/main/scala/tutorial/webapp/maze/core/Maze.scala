@@ -18,8 +18,22 @@ object Maze {
     case Movement.MoveDown => MazeFocus(+1, 0)
   }
 
-  def isExplored(nextFocus: MazeFocus, maze: Maze): Boolean = {
-    maze.squares(nextFocus.row)(nextFocus.col) == PathSquare
+  def move(focus: MazeFocus, maze: Maze, movement: Movement, travel: MazeSquare): Option[MazeFocus] = {
+    // Identify how much the position will change and see if it's a valid result
+    // (within bounds)
+    val delta = getDelta(movement);
+    val optNextFocus = Some(
+      focus.copy(row = focus.row + delta.row, col = focus.col + delta.col)
+    ).filter(
+      (f) => f.col >= 0 && f.col < maze.numCols && f.row >= 0 && f.row < maze.numRows
+    )
+
+    // Use travel to determine what type of square is required for a successful move
+    // Forging a new maze: must be solid
+    // Walking in a constructed maze: must be path
+    optNextFocus.filter(
+      (nextFocus: MazeFocus) => maze.squares(nextFocus.row)(nextFocus.col) == travel
+    )
   }
 
   def createRandom(numRows: Int, numCols: Int, pathLength: Int): (MazeFocus, Maze, MazeFocus) = {
@@ -29,25 +43,9 @@ object Maze {
       Maze.emptyExcept(numRows, numCols, MazeFocus(0, 0))
     )
 
-    def move(focus: MazeFocus, maze: Maze, movement: Movement): Option[MazeFocus] = {
-      // Identify how much the position will change and see if it's a valid result
-      // (within bounds)
-      val delta = getDelta(movement);
-      val optNextFocus = Some(
-        focus.copy(row = focus.row + delta.row, col = focus.col + delta.col)
-      ).filter(
-        (f) => f.col >= 0 && f.col < numCols && f.row >= 0 && f.row < numRows
-      )
-
-      // Ensure the new position is not explored yet.
-      optNextFocus.filter(
-        (nextFocus: MazeFocus) => !isExplored(nextFocus, maze)
-      )
-    }
-
     def excavate(before: (MazeFocus, Maze), movement: Movement): Option[(MazeFocus, Maze)] = {
       // Try to excavate in the given direction
-      val optNextFocus: Option[MazeFocus] = move(before._1, before._2, movement)
+      val optNextFocus: Option[MazeFocus] = move(before._1, before._2, movement, SolidSquare)
       optNextFocus.map(
         (nextFocus: MazeFocus) => {
           val nextMaze = before._2.copy(
