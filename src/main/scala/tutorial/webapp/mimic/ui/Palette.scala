@@ -5,8 +5,8 @@ import org.scalajs.dom.raw.Element
 import org.scalajs.dom.document
 
 import tutorial.webapp.mimic.puzzle.Color
-import tutorial.webapp.alien.DomUtils
-import tutorial.webapp.alien.Delegation
+import tutorial.webapp.ui.DomUtils
+import tutorial.webapp.ui.Delegation
 
 object Palette {
 

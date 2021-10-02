@@ -1,4 +1,4 @@
-package tutorial.webapp
+package tutorial.webapp.mimic
 
 import utest._
 
@@ -8,10 +8,12 @@ import org.scalajs.dom
 import org.scalajs.dom.document
 import org.scalajs.dom.ext._
 
+import tutorial.webapp.mimic.app.MimicApplication
+
 object TutorialTest extends TestSuite {
 
   // Initialize App
-  TutorialApp.setupUI()
+  MimicApplication.setupUI()
 
   def tests = Tests {
     test("HelloWorld") {

@@ -3,8 +3,8 @@ package tutorial.webapp.mimic.ui
 import org.scalajs.dom
 import org.scalajs.dom.raw.Element
 import org.scalajs.dom.document
-import tutorial.webapp.alien.DomUtils
-import tutorial.webapp.alien.Delegation
+import tutorial.webapp.ui.DomUtils
+import tutorial.webapp.ui.Delegation
 
 import tutorial.webapp.mimic.puzzle.Color
 

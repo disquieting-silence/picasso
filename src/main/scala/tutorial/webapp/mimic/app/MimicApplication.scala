@@ -8,6 +8,7 @@ import tutorial.webapp.mimic.ui._
 import tutorial.webapp.mimic.puzzle._
 
 import tutorial.webapp.mimic.state.State
+import tutorial.webapp.ui.Heading
 
 object MimicApplication {
   def newGame(numDown: Int, numAcross: Int) : State = {
@@ -47,7 +48,7 @@ object MimicApplication {
   }
 
   def setupUI(): Unit = {
-    val heading = Heading.make(Heading(1), "Picasso")
+    val heading = Heading.make(Heading(1), "Mimic")
     heading.classList.add("banner")
     document.body.appendChild(heading)
 

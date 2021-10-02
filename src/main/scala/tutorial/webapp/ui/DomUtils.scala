@@ -1,4 +1,4 @@
-package tutorial.webapp.alien
+package tutorial.webapp.ui
 
 import org.scalajs.dom.Element
 
