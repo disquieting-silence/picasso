@@ -10,21 +10,17 @@ import tutorial.webapp.puzzle._
 import tutorial.webapp.state.State
 
 object TutorialApp {
-  val solution = Canvas(
-    3,
-    3,
-    List(
-      List(White, White, Red),
-      List(Red, Blue, Green),
-      List(White, White, Black)
+  def newGame(numDown: Int, numAcross: Int) : State = {
+    val solution = Canvas.generateRandom(numDown, numAcross, Color.getAll())
+    State(
+      user = Canvas.clear(solution),
+      solution = solution,
+      activeColor = White
     )
-  )
+  }
 
-  var state: State = State(
-    user = Canvas.clear(solution),
-    solution = solution,
-    activeColor = White
-  )
+
+  var state: State = newGame(4, 4)
 
   def main(args: Array[String]): Unit = {
     document.addEventListener(
@@ -65,15 +61,27 @@ object TutorialApp {
 
 // hacky solution until I think about it. Just a katamari cell really.
     var hackyGrid: Option[Grid] = None
+    var hackySolution: Option[Grid] = None
 
     var hackyPalette: Option[dom.raw.Element] = None
     var hackyProgress: Option[ProgressBar] = None
 
+    def resizeGrid(original: Grid, newNumRows: Int, newNumCols: Int): Grid = {
+      if (original.numAcross == newNumCols && original.numDown == newNumRows) {
+        original
+      } else {
+        Grid.populateTbody(original.container, original.tbody, newNumRows, newNumCols)
+      }
+    }
+
     def renderCurrent() = {
+      hackySolution.foreach((g) => Grid.renderIn(g, state.solution.grid))
       hackyGrid.foreach((g) => Grid.renderIn(g, state.user.grid));
       hackyPalette.foreach((p) => Palette.setActiveColor(p, state.activeColor))
 
       val percentSolved = calculatePercent(state.user, state.solution)
+      System.out.println("state: " + state)
+      System.out.println("%: " + percentSolved)
 
       hackyProgress.foreach((pb) => {
         ProgressBar.setValue(pb, percentSolved)
@@ -81,8 +89,8 @@ object TutorialApp {
     }
 
     val grid = Grid.make(
-      solution.numDown,
-      solution.numAcross,
+      state.solution.numDown,
+      state.solution.numAcross,
       ({
         case (rowNum, colNum) => {
           state = state.copy(
@@ -99,8 +107,9 @@ object TutorialApp {
 
     hackyGrid = Some(grid)
 
-    val solutionGrid = Grid.make(solution.numDown, solution.numAcross, _ => ())
+    val solutionGrid = Grid.make(state.solution.numDown, state.solution.numAcross, _ => ())
     Grid.renderIn(solutionGrid, state.solution.grid)
+    hackySolution = Some(solutionGrid)
 
     val container = document.createElement("div")
     container.classList.add("container")
@@ -129,6 +138,16 @@ object TutorialApp {
     val progressBar = ProgressBar.make()
     hackyProgress = Some(progressBar)
     document.body.appendChild(progressBar.container)
+
+    val commandBar = CommandBar.build(
+      (numDown, numAcross) => {
+        state = newGame(numDown, numAcross)
+        hackySolution = hackySolution.map(s => resizeGrid(s, numDown, numAcross))
+        hackyGrid = hackyGrid.map(u => resizeGrid(u, numDown, numAcross))
+        renderCurrent()
+      }
+    )
+    document.body.appendChild(commandBar)
 
     renderCurrent()
   }

@@ -54,7 +54,6 @@ object Palette {
   // Hacky DOM approach.
   def setActiveColor(paletteElement: Element, activeColor: Color): Unit = {
     val candidates = getAllItems(paletteElement)
-    System.out.println("candidates: " + candidates)
     candidates.foreach({
       case (elm, color) => if (activeColor == color) {
         elm.classList.add("active-color")
@@ -71,7 +70,7 @@ object Palette {
     val all = colors.map(renderColour)
     all.foreach((a) => div.appendChild(a));
 
-    div.addEventListener("click", (evt: dom.Event) => {
+    div.addEventListener("touchstart", (evt: dom.Event) => {
       Delegation.delegateOn(
         evt,
         (elm) => extractColor(colors, elm),

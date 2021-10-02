@@ -12,11 +12,13 @@ object Canvas {
   def clear(canvas: Canvas): Canvas = {
     canvas.copy(
       grid = canvas.grid.map(
-        (g) => g.map(_ => White)
+        (g) => g.map(_ => Unset)
       )
     )
   }
 
+
+  // We need to return a grid wher the coord is set to newColor
   def setColor(canvas: Canvas, coord: (Int, Int), newColor: Color) = {
     canvas.copy(
       grid = canvas.grid.zipWithIndex.map({
@@ -36,6 +38,25 @@ object Canvas {
           }
         }
       })
+    )
+  }
+
+  // Get a random color from one of the candidates
+  def getRandomColor(candidates: List[Color]): Color = {
+    val colIndex = Math.floor(Math.random() * candidates.length).toInt
+    candidates(colIndex)
+  }
+
+  // Generate a random grid with random colors
+  def generateRandom(height: Int, width: Int, candidates: List[Color]): Canvas = {
+    Canvas(
+      numAcross = width,
+      numDown = height,
+      grid = Range(0, height).toList.map(
+        (r: Int) => Range(0, width).toList.map(
+          (c: Int) => getRandomColor(candidates)
+        )
+      )
     )
   }
 }

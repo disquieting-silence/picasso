@@ -14,6 +14,8 @@ final case object Orange extends Color
 final case object Cyan extends Color
 final case object Brown extends Color
 final case object MultiColor extends Color
+final case object Grey extends Color
+final case object Unset extends Color
 
 object Color {
   def getAll(): List[Color] = List(
@@ -28,11 +30,11 @@ object Color {
     Orange,
     Cyan,
     Brown,
+    Grey,
     MultiColor
   )
 
   def identify(colorString: String): Option[Color] = {
-    System.out.println("identifying :  " + colorString)
     getAll().find(
       (c: Color) => colorString == c.toString().toLowerCase()
     )
