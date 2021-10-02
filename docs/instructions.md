@@ -18,6 +18,7 @@ $ sbt fastLinkJS
 ```
 
 Then to view the desktop application, browse to `index.html`. It will point directly to that js file.
+Use `index-maze.html` for Maze.
 
 > Note, to get continuous compilation, you can also use `sbt ~fastLinkJS`
 

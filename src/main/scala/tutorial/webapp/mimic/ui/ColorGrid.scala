@@ -44,11 +44,6 @@ object ColorGrid {
   }
 
   def make(numRows: Int, numCols: Int, onPaint: ((Int, Int)) => Unit): GridOfSquares = {
-    val MAX_TABLE_SIZE = 180
-
-    // ASSUMPTION: we assume that it is square for now.
-    val cellSize = MAX_TABLE_SIZE / numRows
-
     val grid = GridOfSquares.make(numRows, numCols, resizeCell(numRows))
 
     grid.tbody.addEventListener("touchstart", (e: dom.Event) => {
