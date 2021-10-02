@@ -11,6 +11,7 @@ import tutorial.webapp.mimic.state.State
 import tutorial.webapp.ui.Heading
 import tutorial.webapp.ui.Elements
 import tutorial.webapp.ui.DomUtils
+import tutorial.webapp.ui.GridOfSquares
 
 object MimicApplication {
   def newGame(numDown: Int, numAcross: Int) : State = {
@@ -38,23 +39,23 @@ object MimicApplication {
     DomUtils.appendToBody(heading)
 
 // hacky solution until I think about it. Just a katamari cell really.
-    var hackyGrid: Option[Grid] = None
-    var hackySolution: Option[Grid] = None
+    var hackyGrid: Option[GridOfSquares] = None
+    var hackySolution: Option[GridOfSquares] = None
 
     var hackyPalette: Option[dom.raw.Element] = None
     var hackyProgress: Option[ProgressBar] = None
 
-    def resizeGrid(original: Grid, newNumRows: Int, newNumCols: Int): Grid = {
+    def resizeGrid(original: GridOfSquares, newNumRows: Int, newNumCols: Int): GridOfSquares = {
       if (original.numAcross == newNumCols && original.numDown == newNumRows) {
         original
       } else {
-        Grid.populateTbody(original.container, original.tbody, newNumRows, newNumCols)
+        ColorGrid.populateTbody(original.container, original.tbody, newNumRows, newNumCols)
       }
     }
 
     def renderCurrent() = {
-      hackySolution.foreach((g) => Grid.renderIn(g, state.solution.grid))
-      hackyGrid.foreach((g) => Grid.renderIn(g, state.user.grid));
+      hackySolution.foreach((g) => ColorGrid.renderIn(g, state.solution.grid))
+      hackyGrid.foreach((g) => ColorGrid.renderIn(g, state.user.grid));
       hackyPalette.foreach((p) => Palette.setActiveColor(p, state.activeColor))
 
       val percentSolved = Score.calculatePercent(state.user, state.solution)
@@ -64,7 +65,7 @@ object MimicApplication {
       })
     }
 
-    val grid = Grid.make(
+    val grid = ColorGrid.make(
       state.solution.numDown,
       state.solution.numAcross,
       ({
@@ -83,8 +84,8 @@ object MimicApplication {
 
     hackyGrid = Some(grid)
 
-    val solutionGrid = Grid.make(state.solution.numDown, state.solution.numAcross, _ => ())
-    Grid.renderIn(solutionGrid, state.solution.grid)
+    val solutionGrid = ColorGrid.make(state.solution.numDown, state.solution.numAcross, _ => ())
+    ColorGrid.renderIn(solutionGrid, state.solution.grid)
     hackySolution = Some(solutionGrid)
 
     val container = Elements.container(
