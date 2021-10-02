@@ -9,6 +9,8 @@ import tutorial.webapp.mimic.puzzle._
 
 import tutorial.webapp.mimic.state.State
 import tutorial.webapp.ui.Heading
+import tutorial.webapp.ui.Elements
+import tutorial.webapp.ui.DomUtils
 
 object MimicApplication {
   def newGame(numDown: Int, numAcross: Int) : State = {
@@ -25,32 +27,15 @@ object MimicApplication {
 
 
   def appendPar(targetNode: dom.Node, text: String): Unit = {
-    val parNode = document.createElement("p")
-    parNode.textContent = text
-    targetNode.appendChild(parNode)
+    val parNode = Elements.paragraph(text)
+    DomUtils.append(targetNode, parNode)
   }
 
-  def calculatePercent(user: Canvas, solution: Canvas) = {
-    // Use immutable things.
-    val overallCorrect = user.grid.zipWithIndex.foldRight(0)({
-      case ((row, rowId), acc) => {
-        acc + row.zipWithIndex.foldRight(0)({
-          case ((cell, colId), acc2) => {
-            val numCorrect = cell == solution.grid(rowId)(colId)
-            if (numCorrect) acc2 + 1 else acc2
-          }
-        })
-      }
-    })
-
-    System.out.println("overall: " + overallCorrect)
-    Math.ceil(((overallCorrect + 0.0) / (user.numAcross * user.numDown)) * 100).toInt
-  }
-
+  
   def setupUI(): Unit = {
     val heading = Heading.make(Heading(1), "Mimic")
     heading.classList.add("banner")
-    document.body.appendChild(heading)
+    DomUtils.appendToBody(heading)
 
 // hacky solution until I think about it. Just a katamari cell really.
     var hackyGrid: Option[Grid] = None
@@ -72,9 +57,7 @@ object MimicApplication {
       hackyGrid.foreach((g) => Grid.renderIn(g, state.user.grid));
       hackyPalette.foreach((p) => Palette.setActiveColor(p, state.activeColor))
 
-      val percentSolved = calculatePercent(state.user, state.solution)
-      System.out.println("state: " + state)
-      System.out.println("%: " + percentSolved)
+      val percentSolved = Score.calculatePercent(state.user, state.solution)
 
       hackyProgress.foreach((pb) => {
         ProgressBar.setValue(pb, percentSolved)
@@ -104,16 +87,17 @@ object MimicApplication {
     Grid.renderIn(solutionGrid, state.solution.grid)
     hackySolution = Some(solutionGrid)
 
-    val container = document.createElement("div")
-    container.classList.add("container")
-    container.appendChild(solutionGrid.container)
-    container.appendChild(grid.container)
+    val container = Elements.container(
+      "container",
+      List(solutionGrid.container, grid.container)
+    )
 
-    val outerContainer = document.createElement("div")
-    outerContainer.classList.add("outer-container")
-    outerContainer.appendChild(container)
+    val outerContainer = Elements.container(
+      "outer-container",
+      List(container)
+    )
 
-    document.body.appendChild(outerContainer)
+    DomUtils.appendToBody(outerContainer);
 
     val rawPalette = Palette.renderPalette(
       Color.getAll(),
@@ -126,11 +110,11 @@ object MimicApplication {
     )
 
     hackyPalette = Some(rawPalette)
-    document.body.appendChild(rawPalette)
+    DomUtils.appendToBody(rawPalette)
 
     val progressBar = ProgressBar.make()
     hackyProgress = Some(progressBar)
-    document.body.appendChild(progressBar.container)
+    DomUtils.appendToBody(progressBar.container)
 
     val commandBar = CommandBar.build(
       (numDown, numAcross) => {
@@ -140,6 +124,8 @@ object MimicApplication {
         renderCurrent()
       }
     )
+
+    DomUtils.appendToBody(commandBar)
     document.body.appendChild(commandBar)
 
     renderCurrent()
