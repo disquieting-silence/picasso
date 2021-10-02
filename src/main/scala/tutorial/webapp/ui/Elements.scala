@@ -20,4 +20,14 @@ object Elements {
     parent
   }
 
+  def button(className: String, text: String, onExecute: dom.Event => Unit) = {
+    val button = document.createElement("button")
+    button.innerText = text
+    button.classList.add(className)
+    button.addEventListener("touchstart", (evt: dom.Event) => {
+      onExecute(evt)
+    })
+    button
+  }
+
 }

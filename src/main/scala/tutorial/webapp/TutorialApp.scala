@@ -15,7 +15,7 @@ object TutorialApp {
       "DOMContentLoaded",
       {
         (e: dom.Event) => {
-          if (false) {
+          if (true) {
             MimicApplication.setupUI();
           } else {
             MazeApplication.setupUI();
