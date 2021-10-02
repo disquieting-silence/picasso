@@ -1,4 +1,4 @@
-package tutorial.webapp.puzzle
+package tutorial.webapp.mimic.puzzle
 
 sealed trait Color
 

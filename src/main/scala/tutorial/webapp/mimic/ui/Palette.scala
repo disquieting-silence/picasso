@@ -1,11 +1,12 @@
-package tutorial.webapp.ui
+package tutorial.webapp.mimic.ui
 
 import org.scalajs.dom
 import org.scalajs.dom.raw.Element
 import org.scalajs.dom.document
 
-import tutorial.webapp.puzzle.Color
+import tutorial.webapp.mimic.puzzle.Color
 import tutorial.webapp.alien.DomUtils
+import tutorial.webapp.alien.Delegation
 
 object Palette {
 

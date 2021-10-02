@@ -1,4 +1,4 @@
-package tutorial.webapp.puzzle
+package tutorial.webapp.mimic.puzzle
 
 final case class Canvas(
   numAcross: Int,

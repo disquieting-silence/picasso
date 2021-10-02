@@ -1,4 +1,4 @@
-package tutorial.webapp.ui
+package tutorial.webapp.mimic.ui
 
 import org.scalajs.dom
 import org.scalajs.dom.raw.Element

@@ -1,4 +1,4 @@
-package tutorial.webapp
+package tutorial.webapp.mimic.app
 
 import org.scalajs.dom
 import org.scalajs.dom.document
@@ -9,7 +9,7 @@ import tutorial.webapp.mimic.puzzle._
 
 import tutorial.webapp.mimic.state.State
 
-object TutorialApp {
+object MimicApplication {
   def newGame(numDown: Int, numAcross: Int) : State = {
     val solution = Canvas.generateRandom(numDown, numAcross, Color.getAll())
     State(
@@ -22,14 +22,6 @@ object TutorialApp {
 
   var state: State = newGame(4, 4)
 
-  def main(args: Array[String]): Unit = {
-    document.addEventListener(
-      "DOMContentLoaded",
-      { (e: dom.Event) =>
-        setupUI();
-      }
-    )
-  }
 
   def appendPar(targetNode: dom.Node, text: String): Unit = {
     val parNode = document.createElement("p")
